@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const colors = require('colors');
 const connectDB = require('./config/db');
 // load env variable
 dotenv.config({ path: './config/config.env' });
@@ -32,12 +33,14 @@ app.use('/api/v1/bootcamps', bootcamp);
 // });
 
 const server = app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT} in ${process.env.NODE_ENV}!`);
+    console.log(
+        `App listening on port ${PORT} in ${process.env.NODE_ENV}!`.yellow.bold
+    );
 });
 
 // Handle unhandled promise rejections
 process.on('unhadledRejection', (err, promise) => {
-    console.log(`Error: ${err.message}`);
+    console.log(`Error: ${err.message}`.red);
     // Close server
     server.close(() => process.exit(1));
 });
