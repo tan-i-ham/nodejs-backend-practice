@@ -10,11 +10,13 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 const app = express();
+//body parser
+app.use(express.json());
 
 // const logger = require('./middlewares/logger');
 // app.use(logger);
 if ((process.env.NODE_ENV = 'development')) {
-    app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 const PORT = process.env.PORT || 5000;
@@ -33,14 +35,14 @@ app.use('/api/v1/bootcamps', bootcamp);
 // });
 
 const server = app.listen(PORT, () => {
-    console.log(
-        `App listening on port ${PORT} in ${process.env.NODE_ENV}!`.yellow.bold
-    );
+  console.log(
+    `App listening on port ${PORT} in ${process.env.NODE_ENV}!`.yellow.bold
+  );
 });
 
 // Handle unhandled promise rejections
 process.on('unhadledRejection', (err, promise) => {
-    console.log(`Error: ${err.message}`.red);
-    // Close server
-    server.close(() => process.exit(1));
+  console.log(`Error: ${err.message}`.red);
+  // Close server
+  server.close(() => process.exit(1));
 });
