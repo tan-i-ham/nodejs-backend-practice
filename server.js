@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const errorHandler = require('./middlewares/error');
 const connectDB = require('./config/db');
 // load env variable
 dotenv.config({ path: './config/config.env' });
@@ -16,7 +17,7 @@ app.use(express.json());
 // const logger = require('./middlewares/logger');
 // app.use(logger);
 if ((process.env.NODE_ENV = 'development')) {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,8 @@ const PORT = process.env.PORT || 5000;
 const bootcamp = require('./routes/bootcamps');
 // Mount router
 app.use('/api/v1/bootcamps', bootcamp);
+
+app.use(errorHandler);
 
 // basic route
 // app.get('/', (req, res) => {
@@ -35,14 +38,14 @@ app.use('/api/v1/bootcamps', bootcamp);
 // });
 
 const server = app.listen(PORT, () => {
-  console.log(
-    `App listening on port ${PORT} in ${process.env.NODE_ENV}!`.yellow.bold
-  );
+    console.log(
+        `App listening on port ${PORT} in ${process.env.NODE_ENV}!`.yellow.bold
+    );
 });
 
 // Handle unhandled promise rejections
 process.on('unhadledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`.red);
-  // Close server
-  server.close(() => process.exit(1));
+    console.log(`Error: ${err.message}`.red);
+    // Close server
+    server.close(() => process.exit(1));
 });
